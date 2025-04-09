@@ -1,8 +1,17 @@
 // src/App.jsx
 import { useState } from "react";
 import { Container, Typography, CssBaseline } from "@mui/material";
+import SearchBar from "./components/SearchBar";
 
 function App() {
+  const [searchedCity, setSearchedCity] = useState("");
+
+  const handleCitySearch = (city) => {
+    console.log("Searching for:", city);
+    setSearchedCity(city);
+    // This is where you'll fetch weather data later
+  };
+
   return (
     <>
       <CssBaseline />
@@ -10,7 +19,8 @@ function App() {
         <Typography variant="h4" align="center" gutterBottom>
           Weather App
         </Typography>
-        {/* Features will be added here step by step */}
+
+        <SearchBar onSearch={handleCitySearch} />
       </Container>
     </>
   );
