@@ -66,7 +66,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Container maxWidth="md" sx={{ mt: 4 }}>
         <SearchBar onSearch={handleCitySearch} />
 
         {error && (

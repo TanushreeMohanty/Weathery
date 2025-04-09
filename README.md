@@ -10,6 +10,7 @@ npm install
 npm install @mui/material @emotion/react @emotion/styled
 npm install framer-motion
 npm install @mui/icons-material
+npm install date-fns
 npm run dev
 
 ```
