@@ -35,3 +35,4 @@ git push origin main
    - Humidity (%)  
    - Wind Speed (km/h)  
    - Weather Icon (provided by the API)
+4. **Loading State** – A visual indicator is shown while weather data is being fetched.  
