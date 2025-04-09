@@ -1,15 +1,30 @@
 // src/App.jsx
 import { useState } from "react";
-import { Container, Typography, CssBaseline } from "@mui/material";
+import {
+  Container,
+  Typography,
+  CssBaseline,
+  Box
+} from "@mui/material";
 import SearchBar from "./components/SearchBar";
+import WeatherCard from "./components/WeatherCard";
+import { fetchWeatherData } from "./utils/fetchWeather";
 
 function App() {
   const [searchedCity, setSearchedCity] = useState("");
+  const [weather, setWeather] = useState(null);
+  const [error, setError] = useState("");
 
-  const handleCitySearch = (city) => {
-    console.log("Searching for:", city);
+  const handleCitySearch = async (city) => {
     setSearchedCity(city);
-    // This is where you'll fetch weather data later
+    setError("");
+    setWeather(null);
+    try {
+      const data = await fetchWeatherData(city);
+      setWeather(data);
+    } catch (err) {
+      setError(err.message || "Something went wrong");
+    }
   };
 
   return (
@@ -21,6 +36,16 @@ function App() {
         </Typography>
 
         <SearchBar onSearch={handleCitySearch} />
+
+        <Box mt={2}>
+          {error && (
+            <Typography color="error" align="center">
+              {error}
+            </Typography>
+          )}
+
+          {weather && <WeatherCard weather={weather} />}
+        </Box>
       </Container>
     </>
   );

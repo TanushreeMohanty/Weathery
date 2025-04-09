@@ -28,3 +28,10 @@ git push origin main
 ## Features added till now
 1. **City Search Bar** – Allows users to enter the name of a city.  
 2. **Search Trigger** – Users can initiate a search by clicking the **Submit** button or pressing **Enter**.
+3. **Weather Card** – Displays current weather details including:
+   - City Name  
+   - Temperature (°C)  
+   - Weather Condition (e.g., Sunny, Rainy, Snowy)  
+   - Humidity (%)  
+   - Wind Speed (km/h)  
+   - Weather Icon (provided by the API)
