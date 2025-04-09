@@ -36,3 +36,6 @@ git push origin main
    - Wind Speed (km/h)  
    - Weather Icon (provided by the API)
 4. **Loading State** – A visual indicator is shown while weather data is being fetched.  
+5. **Error Handling** – User-friendly error messages for:
+   - Invalid city name  
+   - API request failure
