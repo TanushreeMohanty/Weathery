@@ -39,3 +39,4 @@ git push origin main
 5. **Error Handling** – User-friendly error messages for:
    - Invalid city name  
    - API request failure
+6. **5-Day Forecast** – Uses the 5-Day / 3-Hour Forecast API to display upcoming weather trends.

@@ -9,19 +9,24 @@ import {
 } from "@mui/material";
 import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
-import { fetchWeatherData } from "./utils/fetchWeather";
+import { fetchWeatherData, fetchForecastData } from "./utils/fetchWeather";
+import Forecast from "./components/Forecast";
 
 function App() {
   const [searchedCity, setSearchedCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // NEW
+  const [forecast, setForecast] = useState(null);
 
   const handleCitySearch = async (city) => {
     setSearchedCity(city);
     setError("");
     setWeather(null);
     setLoading(true); // Start loading
+    setForecast(null);
+    const forecastData = await fetchForecastData(city);
+    setForecast(forecastData);
 
     try {
       const data = await fetchWeatherData(city);
@@ -53,6 +58,8 @@ function App() {
           )}
 
           {weather && !loading && <WeatherCard weather={weather} />}
+          {forecast && !loading && <Forecast forecast={forecast} />}
+
         </Box>
       </Container>
     </>

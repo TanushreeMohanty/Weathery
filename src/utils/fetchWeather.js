@@ -16,3 +16,15 @@ export const fetchWeatherData = async (city) => {
 
   return await response.json();
 };
+
+export const fetchForecastData = async (city) => {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch 5-day forecast.");
+  }
+
+  return await response.json();
+};
