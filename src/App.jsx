@@ -1,68 +1,113 @@
 // src/App.jsx
-import { useState } from "react";
 import {
   Container,
   Typography,
   CssBaseline,
+  IconButton,
+  AppBar,
+  Toolbar,
   Box,
   CircularProgress,
 } from "@mui/material";
+import { useMemo, useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
-import { fetchWeatherData, fetchForecastData } from "./utils/fetchWeather";
 import Forecast from "./components/Forecast";
+import ThemeToggle from "./components/ThemeToggle";
+import { fetchWeatherData, fetchForecastData } from "./utils/fetchWeather";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { motion } from "framer-motion";
 
 function App() {
+  const [mode, setMode] = useState("light");
+  const theme = useMemo(() => createTheme({ palette: { mode } }), [mode]);
+
   const [searchedCity, setSearchedCity] = useState("");
   const [weather, setWeather] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // NEW
   const [forecast, setForecast] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleCitySearch = async (city) => {
     setSearchedCity(city);
     setError("");
     setWeather(null);
-    setLoading(true); // Start loading
     setForecast(null);
-    const forecastData = await fetchForecastData(city);
-    setForecast(forecastData);
-
+    setLoading(true);
     try {
-      const data = await fetchWeatherData(city);
-      setWeather(data);
+      const weatherData = await fetchWeatherData(city);
+      const forecastData = await fetchForecastData(city);
+      setWeather(weatherData);
+      setForecast(forecastData);
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      setError(err.message);
     } finally {
-      setLoading(false); // Stop loading in both success/failure
+      setLoading(false);
     }
   };
 
-  return (
-    <>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Typography variant="h4" align="center" gutterBottom>
-          Weather App
-        </Typography>
+  const handleRefresh = () => {
+    if (searchedCity) handleCitySearch(searchedCity);
+  };
 
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppBar position="static" color="primary">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h6">Weather App</Typography>
+          <Box>
+            <IconButton onClick={handleRefresh} color="inherit" sx={{ mr: 1 }}>
+              <RefreshIcon />
+            </IconButton>
+            <ThemeToggle toggleTheme={() => setMode((prev) => (prev === "light" ? "dark" : "light"))} />
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      <Container maxWidth="sm" sx={{ mt: 4 }}>
         <SearchBar onSearch={handleCitySearch} />
 
-        <Box mt={4} display="flex" flexDirection="column" alignItems="center">
-          {loading && <CircularProgress />} {/* Show loader */}
+        {error && (
+          <Typography color="error" align="center" mt={2}>
+            {error}
+          </Typography>
+        )}
 
-          {error && (
-            <Typography color="error" align="center" mt={2}>
-              {error}
-            </Typography>
-          )}
+        {loading && (
+          <Box display="flex" justifyContent="center" mt={4}>
+            <motion.div
+              initial={{ scale: 0.5 }}
+              animate={{ rotate: 360, scale: 1 }}
+              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+            >
+              <CircularProgress />
+            </motion.div>
+          </Box>
+        )}
 
-          {weather && !loading && <WeatherCard weather={weather} />}
-          {forecast && !loading && <Forecast forecast={forecast} />}
+        {!loading && weather && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <WeatherCard weather={weather} />
+          </motion.div>
+        )}
 
-        </Box>
+        {!loading && forecast && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <Forecast forecast={forecast} />
+          </motion.div>
+        )}
       </Container>
-    </>
+    </ThemeProvider>
   );
 }
 

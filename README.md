@@ -9,6 +9,7 @@ cd weather-app
 npm install
 npm install @mui/material @emotion/react @emotion/styled
 npm install framer-motion
+npm install @mui/icons-material
 npm run dev
 
 ```
@@ -40,3 +41,7 @@ git push origin main
    - Invalid city name  
    - API request failure
 6. **5-Day Forecast** – Uses the 5-Day / 3-Hour Forecast API to display upcoming weather trends.
+7. **Dark / Light Theme Toggle** – Allows switching between light and dark modes.  
+8. **Refresh Button** – Re-fetches weather data for the current city.  
+9. **Loader Animation** – Smooth animation during data fetch operations.  
+10. **UI Animations** – Basic transitions or animations using **Framer Motion** or **CSS** for an enhanced user experience.
