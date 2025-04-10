@@ -11,6 +11,9 @@ npm install @mui/material @emotion/react @emotion/styled
 npm install framer-motion
 npm install @mui/icons-material
 npm install date-fns
+npm install react-router-dom
+npm install chart.js react-chartjs-2
+npm install react-helmet
 npm run dev
 
 ```
@@ -46,3 +49,7 @@ git push origin main
 8. **Refresh Button** – Re-fetches weather data for the current city.  
 9. **Loader Animation** – Smooth animation during data fetch operations.  
 10. **UI Animations** – Basic transitions or animations using **Framer Motion** or **CSS** for an enhanced user experience.
+11 **Landing Page**, **Dashboard**, **Footer**
+12 **Next 12 Hours Forecast**: Scrollable horizontal layout for short-term prediction.
+13 **Live Clock**: Real-time current time display.
+14 **Wind Compass**: Visual representation of wind direction using CSS-based compass.

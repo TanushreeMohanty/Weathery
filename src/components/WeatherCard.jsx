@@ -13,6 +13,14 @@ function WeatherCard({ weather }) {
   const isDark = theme.palette.mode === "dark";
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const colors = {
+    accent1: "#114D7E",
+    accent2: "#0E3A61",
+    background: "#061F38",
+    textLight: "#DCEBFF",
+    textMuted: "#A6BEDC",
+  };
+
   const {
     name,
     main: { temp, feels_like, humidity, pressure },
@@ -37,18 +45,23 @@ function WeatherCard({ weather }) {
         px: 2,
         py: 3,
         borderRadius: 4,
-        boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+        boxShadow: isDark
+          ? "0 8px 24px rgba(0,0,0,0.4)"
+          : "0 8px 24px rgba(0,0,0,0.15)",
         background: isDark
-          ? "rgba(30,30,47,0.6)"
-          : "rgba(255,255,255,0.6)",
+          ? `linear-gradient(135deg, ${colors.background}cc, ${colors.accent2}dd)`
+          : `linear-gradient(135deg, #ffffffaa, #e3f2fdcc)`,
         backdropFilter: "blur(10px)",
-        color: isDark ? "#f5f5f5" : "#0d47a1",
+        color: isDark ? colors.textLight : colors.accent2,
         transition: "all 0.3s ease",
         "&:hover": {
           transform: "scale(1.02)",
-          boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
+          boxShadow: isDark
+            ? "0 12px 32px rgba(0,0,0,0.5)"
+            : "0 12px 32px rgba(0,0,0,0.25)",
         },
       }}
+      aria-label={`Current weather in ${name}`}
     >
       <CardContent>
         <Typography
@@ -56,6 +69,7 @@ function WeatherCard({ weather }) {
           align="center"
           gutterBottom
           fontWeight="bold"
+          component="h2"
         >
           {name}
         </Typography>
@@ -70,15 +84,29 @@ function WeatherCard({ weather }) {
         >
           <img
             src={iconUrl}
-            alt={weatherCondition}
+            alt={`${weatherCondition} icon`}
             width={isMobile ? 90 : 110}
-            style={{ filter: isDark ? "drop-shadow(0 0 5px #90caf9)" : "none" }}
+            loading="lazy"
+            style={{
+              filter: isDark ? `drop-shadow(0 0 6px ${colors.textLight})` : "none",
+            }}
           />
           <Box textAlign="center">
-            <Typography variant="h3" fontWeight="bold">
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              sx={{ color: isDark ? colors.textLight : colors.accent2 }}
+            >
               {Math.round(temp)}°C
             </Typography>
-            <Typography variant="subtitle1" sx={{ textTransform: "capitalize", opacity: 0.9 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                textTransform: "capitalize",
+                opacity: 0.9,
+                color: isDark ? colors.textMuted : "#444",
+              }}
+            >
               {weatherDesc}
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.7 }}>
@@ -99,13 +127,14 @@ function WeatherCard({ weather }) {
           ]}
           isDark={isDark}
           isMobile={isMobile}
+          colors={colors}
         />
       </CardContent>
     </Card>
   );
 }
 
-const GridSection = ({ items, isDark, isMobile }) => (
+const GridSection = ({ items, isDark, isMobile, colors }) => (
   <Box
     display="grid"
     gridTemplateColumns={isMobile ? "1fr" : "repeat(3, 1fr)"}
@@ -118,11 +147,15 @@ const GridSection = ({ items, isDark, isMobile }) => (
         <Typography
           variant="subtitle2"
           fontWeight="medium"
-          sx={{ color: isDark ? "#90caf9" : "#1565c0" }}
+          sx={{
+            color: isDark ? colors.accent1 : colors.accent2,
+          }}
         >
           {label}
         </Typography>
-        <Typography>{value}</Typography>
+        <Typography component="p" sx={{ color: isDark ? colors.textLight : "#333" }}>
+          {value}
+        </Typography>
       </Box>
     ))}
   </Box>
